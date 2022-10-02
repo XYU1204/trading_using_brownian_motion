@@ -54,15 +54,32 @@ For each of the 1D random walk, the dealers make decision stochastically based o
 To capture the stochastic behavior between the two dealers and to make our calculation easier, we can simulate and visualize the trading process as a 2D random walk instead of two interative 1D random walk. D(t) in L7 represent the differences in the mid-price between the two dealers, and A(t) in L8 calculates the average of the mid-prices of the two dealers. For each move in 2D random walk, D(t) can be bootstrapped from the joint distribution of the steps from two dealers as shown in L9, and A(t) can be bootstrapped from the joint distribution plus the impression*behavior term. For simplicity of the study, we assume the two dealers have the exact same behavior, and same previous behavior about the stock.
 
 ## [Building a Stochastic Dealer using Brownian Motion: Simulation](https://github.com/XYU1204/trading_using_brownian_motion/blob/main/stochastic_trader.ipynb)
-
+d-2.0 : number of steps =  12826 , price change =  -0.0025950000897552172 <br>
+d-1.25 : number of steps =  12826 , price change =  0.00029062501231180704 <br>
+d0.0 : number of steps =  12826 , price change =  0.0051000000001693024 <br>
+d+1.25 : number of steps =  12826 , price change =  0.009909374988026798 <br>
+d+2.0 : number of steps =  12826 , price change =  0.012795000090093822 <br>
 ![image](https://user-images.githubusercontent.com/56236129/193456553-b188dc81-3e7e-4f60-9aab-f70ca96cab36.png)
 
+We visualize the trading processes for different trading behavior (as represented by d-values). We set the random seed to be the same for all 5 simulations. The simulations takes the same number of steps to complete the trade, which is what we expected since the transaction condition is dependent on the differences in mid-prices in equation L7, which is unaffected by the trend-following or trend-contrarying behavior. However, the final price for the stock increases as the trend-following behavior enhance. This is because the initial steps in our simulation has random flunctuation toward increasing price, and the trend-following behavior amplify such flunctuation in the long run.
+
+![image](https://user-images.githubusercontent.com/56236129/193457659-439c2680-00c2-4045-8ea5-4250cf5a6643.png)
+
+The trend-following behavior amplify initial smaller flunctuations. This is evident as shown in the figure above, the changes in market price for $d=+2$ is extremely violate compared to other behavior. Thus, we classify $d=+2$ as the outlier and plot the figure again without $d=+2$ to examine the impact of different trading behaviors.
+
+![image](https://user-images.githubusercontent.com/56236129/193458049-a8891cac-de80-4edb-b033-60889759b5b6.png)
+
+The market prices and 1-day price returns over trading steps for d=-2, d=-1.25, d=0, and d=1.25 are plotted above. As we can discover from the market price figure, the trend-contrarian trading behavior stablize the market prices, and trend following behavior makes the prices more violate. 
+
+![image](https://user-images.githubusercontent.com/56236129/193458192-c3c48dd9-b66d-46c4-811c-3013541a76b7.png)
+
+Last, we compared the probability density of the abosulate price returns for different trading behaviors to the returns of real-market data from S&P 500. All of the distributions follows exponential laws except for extreme trend-following simulation. Therefore, the stochastic dealer model we studied can be a good approximation for real market trading. We can expand the model in the future to study different trading behavior, and to create an alarm system for the next economical recess.
 
 ## Future Work
 
 There are few possible extensions to this project to make the dealer model simulation more close to real life stock exchange behavior:
 
-1. In our model, we used only two dealers. However, in real stock exchange market, scalability
-2. We assume both dealers in our simulation has the same behavior, either they are both trend followers, or both contratrians. However, in 
+1. In our model, we used only two dealers. However, in real stock exchange market, millions are trading at the same time. Therefore, we can add numbers of dealers in our model and make it more scalable.
+2. We assume both dealers in our simulation has the same behavior, either they are both trend followers, or both contratrians. However, in real life, each trader has their unique behavior. Another possible way to expand the dealer model is to research real market data, and to come up with a statistical distribution profile of different trading behaviors. Adding that profile to dealer model can make it more similar to real life scenarios.
 
 
