@@ -2,7 +2,7 @@
 
 * Explored the stochastic dealer model from a [paper](https://www.researchgate.net/publication/26284556_Solvable_stochastic_dealer_models_for_financial_markets) published on Physical Review E in 2008 during an global economical recession. The study aim for understanding the economical impacts of different trading behaviors. 
 * Fetched real-time stock data from Yahoo using pandas_datareader API. Calculated statistical properties of 1-, 30-, 90-, and 180-day logistic change in Price. Forecast future stock prices using Regression and LSTM.
-* 
+* Used stochastic process theories to simulate and visualize the trading process as a 2D random walk. Characterized the impacts of different trend-following and trend-contrarian behaviors on market prices and returns.
 
 ## Code and Resources Used 
 **Python Version:** 3.7  
