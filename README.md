@@ -1,10 +1,8 @@
-# trading_simulation_using_brownian_motion
+# trading_simulation_using_random_walk
 
 * Explored the stochastic dealer model from a [paper](https://www.researchgate.net/publication/26284556_Solvable_stochastic_dealer_models_for_financial_markets) published on Physical Review E in 2008 during an global economical recession. The study aim for understanding the economical impacts of different trading behaviors. 
 * Fetched real-time stock data from Yahoo using pandas_datareader API. Calculated statistical properties of 1-, 30-, 90-, and 180-day logistic change in Price. Forecast future stock prices using Regression and LSTM.
-* Portfolio Optimization using 2000 Monte Carlo Simulations.
-* Optimize arbitrary initial portfolio weights by maximizing sharpe_ratio using SLSQP (Sequential Least Squares Programming). 
-* On average, the optimizer increased expected annual return by 73.99%, and increase expected sharpe ratio by 25.40%, making the investment more profitable and less violatile at the same time.
+* 
 
 ## Code and Resources Used 
 **Python Version:** 3.7  
@@ -39,5 +37,32 @@ Here, we don't see much a difference between the performance of a simple regress
 
 We plot the difference between predicted price and real stock closing price. It turned out simple regression model works better than LSTM algorithm. This tells us more complex model doesn't necessarily model data better than simple physical models. Data insights are important!
 
-## [Building a Stochastic Dealer using Brownian Motion](https://github.com/XYU1204/trading_using_brownian_motion/blob/main/stochastic_trader.ipynb)
-To evaluate the performance of the optimizer we created, we randomly generated 50 initialization feed to the optimizer. We compared the percentage increase in annual return and in sharpe ratio before and after optimization. On average, our optimizer shows 73.99% increase in expected annual return, and 25.40% increase in expected sharpe ratio. 
+## Building a Stochastic Dealer using Brownian Motion: Theory
+
+The detailed theory on the stochastic dealer model can be found in the  [paper](https://www.researchgate.net/publication/26284556_Solvable_stochastic_dealer_models_for_financial_markets). Here, we brief summarize the idea on how to perform the dealer simulation. 
+
+![image](https://user-images.githubusercontent.com/56236129/193455291-ce818f12-81ff-4208-8ce6-aecb6933e423.png)
+
+We have two dealers $p_1(t)$ and $p_2(t)$ buying and selling a stock with each other. We characterize their positions through their mid-price, which is the average of their bid and ask prices. The price of each dealer follows an independent 1D random walk in time until the transaction condition, one dealer's bid price (minimum price willing to sell) is higher than the other deadler's ask price (maximum price willing to buy), is met (equation L1 shown in figure above). At this point, they exchange one unit of stock at a market price given by the average of the mid-prices (equation L2). Their mid-prices are then reset to this new Market price, and they start a new random walk.
+
+![image](https://user-images.githubusercontent.com/56236129/193455405-51ccf0b4-13ab-47f2-b915-acd97e6581c6.png)
+
+For each of the 1D random walk, the dealers make decision stochastically based on previous impression of the stock. The previous impression times behavior term is captured on the second term of L4. The previous impression is calculated in L6 as the moving average over the previous price changes. Here, $M$ represents how many previous price changes we are considering. The constant $d$ capture the behavior of the dealer: whether the dealer follow the previous trend (d>0), or trade contrary to the previous trend (d<0). 
+
+![image](https://user-images.githubusercontent.com/56236129/193455715-63d7c2e6-aef4-439c-8f74-7b9171e658f6.png)
+
+To capture the stochastic behavior between the two dealers and to make our calculation easier, we can simulate and visualize the trading process as a 2D random walk instead of two interative 1D random walk. D(t) in L7 represent the differences in the mid-price between the two dealers, and A(t) in L8 calculates the average of the mid-prices of the two dealers. For each move in 2D random walk, D(t) can be bootstrapped from the joint distribution of the steps from two dealers as shown in L9, and A(t) can be bootstrapped from the joint distribution plus the impression*behavior term. For simplicity of the study, we assume the two dealers have the exact same behavior, and same previous behavior about the stock.
+
+## [Building a Stochastic Dealer using Brownian Motion: Simulation](https://github.com/XYU1204/trading_using_brownian_motion/blob/main/stochastic_trader.ipynb)
+
+![image](https://user-images.githubusercontent.com/56236129/193456553-b188dc81-3e7e-4f60-9aab-f70ca96cab36.png)
+
+
+## Future Work
+
+There are few possible extensions to this project to make the dealer model simulation more close to real life stock exchange behavior:
+
+1. In our model, we used only two dealers. However, in real stock exchange market, scalability
+2. We assume both dealers in our simulation has the same behavior, either they are both trend followers, or both contratrians. However, in 
+
+
